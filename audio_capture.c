@@ -61,15 +61,11 @@ int audio_capture_init(char *audio_dev)
 	}
 }
 
-int audio_capture_read(char *buffer, int size)
+int audio_capture_read(int *buffer, int size)
 {
-	int i, err;
-
-	if ((err = snd_pcm_readi(capture_handle, buffer, size)) != size) {
-		fprintf(stderr, "read from audio interface failed (%s)\n", snd_strerror(err));
-		return -1;
-	}
-	return size;
+	int rc;
+	rc = snd_pcm_readi(capture_handle, (void*)buffer, size);
+	return rc;
 }
 
 void audio_capture_close()

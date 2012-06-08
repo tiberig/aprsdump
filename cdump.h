@@ -1,6 +1,7 @@
 #ifndef FLOATDUMP_H
 #define FLOATDUMP_H
 
-void fdump(char *fbuf, int size);
+void cdump(int *fbuf, int size);
+void cbar(int val);
 
 #endif
