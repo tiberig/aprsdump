@@ -4,7 +4,6 @@
 
 snd_pcm_t *capture_handle;
 snd_pcm_hw_params_t *hw_params;
-short buf[128];
 
 int audio_capture_init(char *audio_dev)
 {
@@ -60,13 +59,17 @@ int audio_capture_init(char *audio_dev)
 		fprintf(stderr, "cannot prepare audio interface for use (%s)\n", snd_strerror(err));
 		return -1;
 	}
+}
 
-	for (i = 0; i < 10; ++i) {
-		if ((err = snd_pcm_readi(capture_handle, buf, 128)) != 128) {
-			fprintf(stderr, "read from audio interface failed (%s)\n", snd_strerror(err));
-			return -1;
-		}
+int audio_capture_read(char *buffer, int size)
+{
+	int i, err;
+
+	if ((err = snd_pcm_readi(capture_handle, buffer, size)) != size) {
+		fprintf(stderr, "read from audio interface failed (%s)\n", snd_strerror(err));
+		return -1;
 	}
+	return size;
 }
 
 void audio_capture_close()
