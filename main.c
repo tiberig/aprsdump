@@ -7,10 +7,10 @@
 #include "audiometer.h"
 #include "cdump.h"
 
-static void sig_int_handler(int sig);
+static void  sig_int_handler(int sig);
 static char *audio_dev = "";
-static int run = 1;
-static int aubuf[64];
+static int   run = 1;
+static int  *aubuf;
 
 int main(int argc, char *argv[])
 {
@@ -40,9 +40,10 @@ int main(int argc, char *argv[])
 
 	/* start decoder loop */
 	while (1 == run) {
-		rdnum = audio_capture_read(aubuf, 64);
+		rdnum = audio_capture_read(&aubuf);
+		if (-1 == rdnum) break;
 	//	cdump(aubuf, rdnum);
-		cbar(audiometer(aubuf, 64));
+		cbar(audiometer(aubuf, rdnum));
 	}
 
 	printf("- shutdown audio capture\n");

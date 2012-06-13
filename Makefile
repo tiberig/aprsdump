@@ -1,19 +1,26 @@
+LD=gcc
+CC=gcc
+
+CFLAGS=-Wall -I.
+LDFLAGS=
+
 all:	aprsdump
 
 aprsdump:	main.o audio_capture.o cdump.o audiometer.o
-	gcc -o aprsdump main.o audio_capture.o cdump.o  audiometer.o -lasound
+	$(LD) $(LDFLAGS) -o aprsdump main.o audio_capture.o cdump.o  audiometer.o -lasound -lm
 
 main.o:	main.c
-	gcc -c main.c -I.
+	$(CC) $(CFLAGS) -c main.c
 
 audio_capture.o:	audio_capture.c
-	gcc -c audio_capture.c -I.
+	$(CC) $(CFLAGS) -c audio_capture.c 
 
 cdump.o:	cdump.c
-	gcc -c cdump.c -I.
+	$(CC) $(CFLAGS) -c cdump.c
 	
 audiometer.o:	audiometer.c
-	gcc -c audiometer.c -I.
+	$(CC) $(CFLAGS) -c audiometer.c
 	
 clean:
 	rm -f *.o aprsdump
+	make -C multimon clean
